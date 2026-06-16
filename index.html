@@ -191,7 +191,7 @@
             document.getElementById("pantallaCarga").classList.add("oculto");
         };
 
-        // --- 3. EXPORTAR Y SUBIR PDF A SUPABASE ---
+// --- 3. EXPORTAR Y SUBIR PDF A SUPABASE (MULTIFOLIO INTELIGENTE) ---
         async function generarYSubirPDF() {
             const btn = document.getElementById("btnProcesar");
             btn.innerText = "⏳ Encriptando y subiendo documento...";
@@ -208,11 +208,27 @@
 
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF('p', 'mm', 'a4');
-                const pdfWidth = pdf.internal.pageSize.getWidth();
-                const pdfHeight = (canvasHTML.height * pdfWidth) / canvasHTML.width;
-                pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
-                const pdfBlob = pdf.output('blob');
+                const imgWidth = pdf.internal.pageSize.getWidth();
+                const pageHeight = pdf.internal.pageSize.getHeight();
+                // Calculamos el alto total que necesita el contrato
+                const imgHeight = (canvasHTML.height * imgWidth) / canvasHTML.width;
+                
+                let heightLeft = imgHeight;
+                let position = 0;
 
+                // Pegamos la primera página
+                pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+
+                // 🚀 BUCLE MÁGICO: Si falta contrato, agrega hojas nuevas y lo acomoda
+                while (heightLeft > 0) {
+                    position -= pageHeight;
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                }
+
+                const pdfBlob = pdf.output('blob');
                 const fileName = "CONTRATO_" + nombreClienteFormateado.replace(/ /g, '_') + "_" + Date.now() + ".pdf";
                 
                 // Subir a Supabase
