@@ -9,37 +9,50 @@
     <meta property="og:image" content="https://tu-sitio.com/ruta-a-tu-logo.png">
     <meta property="og:type" content="website">
 
-    <title>Firma de Contrato - REPAY NOW</title>
+    <title>Contrato de Comisión Mercantil - REPAY NOW</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
     <style>
-        :root { --primary: #1e293b; --accent: #3b82f6; --bg: #f8fafc; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); color: #334155; margin: 0; padding: 20px; display: flex; justify-content: center; }
-        .contenedor { background: white; max-width: 800px; width: 100%; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        .header { text-align: center; border-bottom: 2px solid var(--primary); padding-bottom: 20px; margin-bottom: 20px; }
-        .header h1 { margin: 0; color: var(--primary); font-size: 24px; }
-        .contrato-texto { font-size: 14px; line-height: 1.6; text-align: justify; margin-bottom: 30px; }
-        .resaltado { font-weight: bold; color: var(--primary); background: #f1f5f9; padding: 2px 6px; border-radius: 4px; }
+        :root { --primary: #0f172a; --accent: #2563eb; --bg: #f1f5f9; }
+        body { font-family: 'Times New Roman', Times, serif; background-color: var(--bg); color: #000; margin: 0; padding: 30px; display: flex; justify-content: center; }
         
-        /* ZONA DE FIRMA */
-        .zona-firma { text-align: center; margin-top: 40px; background: #f8fafc; padding: 20px; border-radius: 8px; border: 1px dashed #cbd5e1; }
-        canvas { background: white; border: 2px solid #cbd5e1; border-radius: 8px; cursor: crosshair; touch-action: none; width: 100%; max-width: 400px; height: 200px; }
-        .btn { background: var(--accent); color: white; border: none; padding: 15px 30px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 15px; width: 100%; max-width: 400px; transition: 0.3s; }
+        /* DISEÑO FORMAL DE HOJA DE CONTRATO */
+        .contenedor { background: white; max-width: 850px; width: 100%; padding: 50px 60px; border-radius: 0px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); box-sizing: border-box; }
+        .header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 15px; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #000; font-size: 22px; font-weight: bold; letter-spacing: 1px; }
+        .header h3 { margin: 5px 0 0 0; color: #334155; font-size: 14px; font-weight: normal; }
+        
+        .contrato-texto { font-size: 15px; line-height: 1.8; text-align: justify; color: #000; }
+        h4 { text-align: center; margin-top: 25px; margin-bottom: 15px; font-size: 16px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        /* ESTILO FORMAL PARA VARIABLES LEGALES (ADIÓS PILLS GRISES) */
+        .resaltado { font-weight: bold; color: #000; text-decoration: underline; background: transparent; padding: 0; border-radius: 0; }
+        
+        /* ÁREA DE FIRMAS IMPRESAS EN EL CONTRATO */
+        .firmas-container { display: flex; justify-content: space-between; margin-top: 60px; text-align: center; page-break-inside: avoid; }
+        .bloque-firma { width: 42%; display: inline-block; vertical-align: top; }
+        .linea-firma { border-top: 1px solid #000; margin-bottom: 8px; }
+        .contenedor-firma-img { height: 70px; text-align: center; margin-bottom: -15px; }
+        .contenedor-firma-img img { height: 100%; max-width: 100%; object-fit: contain; display: inline-block; }
+        
+        /* PANEL OPERATIVO DE FIRMA DIGITAL (NO SE IMPRIME) */
+        .zona-firma { text-align: center; margin-top: 50px; background: #f8fafc; padding: 25px; border-radius: 8px; border: 1px dashed #cbd5e1; page-break-inside: avoid; }
+        canvas { background: white; border: 2px solid #94a3b8; border-radius: 6px; cursor: crosshair; touch-action: none; width: 100%; max-width: 450px; height: 200px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); }
+        .btn { background: var(--accent); color: white; border: none; padding: 14px 30px; font-size: 15px; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 15px; width: 100%; max-width: 450px; transition: 0.2s; text-transform: uppercase; letter-spacing: 0.5px; }
+        .btn:hover { background: #1d4ed8; }
         .btn:disabled { background: #94a3b8; cursor: not-allowed; }
-        .btn-limpiar { background: #ef4444; margin-top: 10px; padding: 10px 20px; font-size: 14px; }
+        .btn-limpiar { background: #dc2626; margin-top: 8px; padding: 8px 20px; font-size: 13px; }
+        .btn-limpiar:hover { background: #b91c1c; }
         
-        .pantalla-carga { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.9); display:flex; justify-content:center; align-items:center; flex-direction:column; z-index:9999; font-size:20px; font-weight:bold; color:var(--accent); }
+        .pantalla-carga { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.95); display:flex; justify-content:center; align-items:center; flex-direction:column; z-index:9999; font-size:18px; font-weight:bold; color:var(--accent); font-family: sans-serif; }
         .oculto { display: none !important; }
-
-        .firmas-container { display: flex; justify-content: space-between; margin-top: 50px; flex-wrap: wrap; gap: 20px; text-align: center; }
-        .bloque-firma { flex: 1; min-width: 250px; }
-        .linea-firma { border-top: 1px solid #000; margin-bottom: 5px; margin-top: 40px; }
     </style>
 </head>
 <body>
 
     <div id="pantallaCarga" class="pantalla-carga">
-        ⏳ Preparando tu contrato seguro...
+        ⏳ Asegurando conexión y preparando documento mercantil...
     </div>
 
     <div class="contenedor" id="documentoContrato">
@@ -49,18 +62,18 @@
         </div>
 
         <div class="contrato-texto">
-            <p>Que celebran por una parte <b>REPAY NOW S DE RL DE CV</b>, a quien en lo sucesivo se le denominará "EL COMISIONISTA", representado en este acto por ARMANDO SILVA VAZQUEZ, y por la otra parte <span class="resaltado" id="lblNombreCliente">[CARGANDO NOMBRE...]</span>, a quien en lo sucesivo se le denominará "EL COMITENTE", al tenor de las siguientes declaraciones y cláusulas:</p>
+            <p>Que celebran por una parte <b>REPAY NOW S DE RL DE CV</b>, a quien en lo sucesivo se le denominará "EL COMISIONISTA", representado en este acto por ARMANDO SILVA VAZQUEZ, y por la otra parte <span class="resaltado" id="lblNombreCliente">REGISTRO DE CLIENTE PENDIENTE</span>, a quien en lo sucesivo se le denominará "EL COMITENTE", al tenor de las siguientes declaraciones y cláusulas:</p>
             
             <h4>DECLARACIONES</h4>
             <p><b>I. Declara "EL COMISIONISTA":</b></p>
-            <p>A) Ser una sociedad de responsabilidad limitada de capital variable legalmente constituida conforme a las leyes de los Estados Unidos Mexicanos, con Registro Federal de Contribuyentes RNO230414TR9.</p>
-            <p>B) Que su objeto social y actividad económica le permite actuar como intermediario, gestor y comisionista mercantil para la facilitación de pagos y trámites en el extranjero.</p>
-            <p>C) Señala como su domicilio legal el ubicado en: Calle Simona Barba 5110 Col. Partido Escobedo C.P. 32330.</p>
+            <p style="margin-left: 20px; text-align: justify;">A) Ser una sociedad de responsabilidad limitada de capital variable legalmente constituida conforme a las leyes de los Estados Unidos Mexicanos, con Registro Federal de Contribuyentes RNO230414TR9.</p>
+            <p style="margin-left: 20px; text-align: justify;">B) Que su objeto social y actividad económica le permite actuar como intermediario, gestor y comisionista mercantil para la facilitación de pagos y trámites en el extranjero.</p>
+            <p style="margin-left: 20px; text-align: justify;">C) Señala como su domicilio legal el ubicado en: Calle Simona Barba 5110 Col. Partido Escobedo C.P. 32330.</p>
             
             <p><b>II. Declara "EL COMITENTE":</b></p>
-            <p>A) Ser una persona Física / Moral, con capacidad jurídica y económica para obligarse en los términos de este contrato, con <span class="resaltado" id="lblIdentificadores">[CARGANDO IDS...]</span>.</p>
-            <p>B) Señala como su domicilio legal el ubicado en: <span class="resaltado" id="lblDomicilioCliente">[CARGANDO DOMICILIO...]</span>.</p>
-            <p>C) Que es su voluntad y necesidad adquirir vehículos automotores en subastas ubicadas en los Estados Unidos de América y requiere los servicios de "EL COMISIONISTA" para realizar los pagos correspondientes a dichas entidades extranjeras por su cuenta y orden.</p>
+            <p style="margin-left: 20px; text-align: justify;">A) Ser una persona Física / Moral, con capacidad jurídica y económica para obligarse en los términos de este contrato, identificándose formalmente con la clave de registro <span class="resaltado" id="lblIdentificadores">DOCUMENTOS...</span>.</p>
+            <p style="margin-left: 20px; text-align: justify;">B) Señala como su domicilio legal el ubicado en: <span class="resaltado" id="lblDomicilioCliente">DIRECCIÓN EN PROCESO...</span>.</p>
+            <p style="margin-left: 20px; text-align: justify;">C) Que es su voluntad y necesidad adquirir vehículos automotores en subastas ubicadas en los Estados Unidos de América y requiere los servicios de "EL COMISIONISTA" para realizar los pagos correspondientes a dichas entidades extranjeras por su cuenta y orden.</p>
             
             <h4>CLÁUSULAS</h4>
             <p><b>PRIMERA. OBJETO DEL CONTRATO.</b> "EL COMITENTE" confiere a "EL COMISIONISTA", y este acepta, el encargo de realizar, a nombre y por cuenta de "EL COMITENTE", las gestiones de pago y transferencias internacionales de fondos dirigidas a empresas de subastas de vehículos en los Estados Unidos de América (tales como Copart, IAAI, entre otras), para la liquidación de los vehículos que "EL COMITENTE" haya adjudicado o desee adquirir.</p>
@@ -71,36 +84,36 @@
             <p><b>SEXTA. VIGENCIA Y TERMINACIÓN.</b> El presente contrato tendrá una vigencia por tiempo indefinido y aplicará para todas las operaciones futuras que "EL COMITENTE" solicite. Cualquiera de las partes podrá darlo por terminado mediante aviso por escrito con 15 días de anticipación.</p>
             <p><b>SÉPTIMA. JURISDICCIÓN Y COMPETENCIA.</b> Para la interpretación, cumplimiento y ejecución del presente contrato, las partes se someten expresamente a la jurisdicción y competencia de los tribunales de Ciudad Juárez, Chihuahua, renunciando a cualquier otro fuero que por razón de sus domicilios presentes o futuros pudiera corresponderles.</p>
             
-            <p style="margin-top: 30px;">Leído que fue el presente contrato y enteradas las partes de su alcance y contenido legal, lo firman por duplicado el día <span class="resaltado" id="lblFechaContrato">[FECHA ACTUAL]</span>.</p>
+            <p style="margin-top: 35px;">Leído que fue el presente contrato y enteradas las partes de su alcance y contenido legal, lo firman por duplicado el día <span class="resaltado" id="lblFechaContrato">FECHA</span>.</p>
             
             <div class="firmas-container">
                 <div class="bloque-firma">
-                    <div class="linea-firma"></div>
+                    <div class="contenedor-firma-img"></div> <div class="linea-firma"></div>
                     <b>"EL COMISIONISTA"</b><br>
                     REPAY NOW S DE RL DE CV
                 </div>
                 <div class="bloque-firma">
+                    <div class="contenedor-firma-img" id="espacioFirmaInyectada"></div>
                     <div class="linea-firma"></div>
                     <b>"EL COMITENTE"</b><br>
-                    <span id="lblFirmaNombre">[NOMBRE DEL CLIENTE]</span>
+                    <span id="lblFirmaNombre">NOMBRE DEL CLIENTE</span>
                 </div>
             </div>
-
         </div>
 
-        <div class="zona-firma" id="seccionFirmas">
-            <h3 style="margin-bottom: 5px;">Por favor, dibuje su firma en el recuadro blanco:</h3>
-            <p style="color: #ef4444; font-weight: bold; margin-top: 0; font-size: 13px;">⚠️ IMPORTANTE: Firme lo más exacto posible a su Identificación Oficial.</p>
+        <div class="zona-firma no-print" id="seccionFirmas">
+            <h3 style="margin-bottom: 5px; font-family: sans-serif;">Por favor, dibuje su firma en el recuadro blanco:</h3>
+            <p style="color: #dc2626; font-weight: bold; margin-top: 0; font-size: 13px; font-family: sans-serif;">⚠️ ATENCIÓN: Realice su firma lo más parecida posible a su Identificación Oficial.</p>
             <canvas id="pizarraFirma"></canvas>
             <br>
-            <button class="btn btn-limpiar" onclick="limpiarFirma()">🔄 Borrar y firmar de nuevo</button>
+            <button class="btn btn-limpiar" onclick="limpiarFirma()">🔄 Borrar y repetir trazo</button>
             <br><br>
-            <div style="font-size: 14px; color: #64748b; margin-bottom: 15px;">Al hacer clic en "Aceptar y Firmar", usted acepta legalmente los términos de este contrato.</div>
-            <button class="btn" id="btnProcesar" onclick="generarYSubirPDF()">✅ ACEPTAR Y FIRMAR</button>
+            <div style="font-size: 13px; color: #64748b; margin-bottom: 15px; font-family: sans-serif;">Al presionar el botón, usted ratifica y estampa legalmente su firma en el acuerdo comercial.</div>
+            <button class="btn" id="btnProcesar" onclick="generarYSubirPDF()">✅ ACEPTAR Y ESTAMPAR FIRMA</button>
         </div>
         
-        <div id="mensajeExito" class="oculto" style="text-align: center; color: var(--success); font-size: 22px; font-weight: bold; margin-top: 40px;">
-            🎉 ¡Contrato firmado exitosamente!<br><span style="font-size: 16px; color: #64748b;">Ya puede cerrar esta ventana.</span>
+        <div id="mensajeExito" class="oculto" style="text-align: center; color: #16a34a; font-size: 22px; font-weight: bold; margin-top: 40px; font-family: sans-serif;">
+            🎉 ¡Contrato formalizado y firmado exitosamente!<br><span style="font-size: 15px; color: #64748b; font-weight: normal;">El expediente digital ha sido actualizado. Puede cerrar esta ventana.</span>
         </div>
     </div>
 
@@ -112,7 +125,7 @@
         let idClienteActual = "";
         let nombreClienteFormateado = "CLIENTE NO DEFINIDO";
 
-        // --- 1. CANVAS DE FIRMA ---
+        // --- 1. LÓGICA DEL LIENZO DE FIRMA ---
         const canvas = document.getElementById('pizarraFirma');
         const ctx = canvas.getContext('2d');
         let dibujando = false;
@@ -124,7 +137,7 @@
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.lineWidth = 3;
             ctx.lineCap = 'round';
-            ctx.strokeStyle = '#0f172a';
+            ctx.strokeStyle = '#000000';
         }
         window.addEventListener('resize', resizeCanvas);
         
@@ -139,13 +152,12 @@
 
         function limpiarFirma() { ctx.fillRect(0, 0, canvas.width, canvas.height); }
 
-        // --- 2. CARGA DIRECTA DE DATOS (GITHUB PAGES) ---
+        // --- 2. CARGA FORMAL DE DATOS DESDE SUPABASE ---
         window.onload = async function() {
             resizeCanvas();
             const opcionesFecha = { year: 'numeric', month: 'long', day: 'numeric' };
             document.getElementById("lblFechaContrato").innerText = new Date().toLocaleDateString('es-MX', opcionesFecha);
 
-            // Leer URL limpia
             const urlParams = new URLSearchParams(window.location.search);
             idClienteActual = urlParams.get('id');
             
@@ -157,16 +169,14 @@
                     if(data.length > 0) {
                         let cliente = data[0];
                         
-                        // 1. Armar Nombre Completo con todos los apellidos
                         let n1 = cliente.first_name || "";
                         let n2 = cliente.middle_name || "";
                         let apellidos = cliente.last_name || "";
                         nombreClienteFormateado = `${n1} ${n2} ${apellidos}`.replace(/\s+/g, ' ').trim().toUpperCase();
                         
                         document.getElementById("lblNombreCliente").innerText = nombreClienteFormateado;
-                        document.getElementById("lblFirmaNombre").innerText = nombreClienteFormateado; // Firma al final
+                        document.getElementById("lblFirmaNombre").innerText = nombreClienteFormateado;
                         
-                        // 2. Lógica del Documento (MEX vs USA)
                         let textoLegal = "";
                         if(cliente.pais === 'USA') {
                             textoLegal = "TIN/SSN: " + (cliente.tin || "NO REGISTRADO");
@@ -174,53 +184,54 @@
                             textoLegal = "RFC: " + (cliente.rfc || "NO REGISTRADO") + " y CURP: " + (cliente.curp || "NO REGISTRADO");
                         }
                         document.getElementById("lblIdentificadores").innerText = textoLegal;
-
-                        // 3. Domicilio
                         document.getElementById("lblDomicilioCliente").innerText = cliente.address || "NO REGISTRADO";
                         
                     } else {
-                        alert("No se encontró el registro del cliente.");
+                        alert("No se encontró el expediente del cliente.");
                     }
-                } catch(e) { 
-                    console.error("Error cargando cliente", e); 
-                }
+                } catch(e) { console.error("Error al mapear cliente:", e); }
             } else {
-                alert("Error: El enlace no contiene un ID de cliente válido.");
+                alert("ID de enlace corrupto o inexistente.");
             }
-            
             document.getElementById("pantallaCarga").classList.add("oculto");
         };
 
-// --- 3. EXPORTAR Y SUBIR PDF A SUPABASE (MULTIFOLIO INTELIGENTE) ---
+        // --- 3. EXPOSTACIÓN MULTIPÁGINA + ESTAMPADO DE FIRMA ---
         async function generarYSubirPDF() {
             const btn = document.getElementById("btnProcesar");
-            btn.innerText = "⏳ Encriptando y subiendo documento...";
+            btn.innerText = "⏳ Sellar y guardar documento formal...";
             btn.disabled = true;
 
             try {
-                // Escondemos los botones para que no salgan en el PDF
-                document.querySelector('.btn-limpiar').classList.add('oculto');
-                btn.classList.add('oculto');
+                // 🔥 LA MAGIA: Clonamos el trazo del lienzo y lo estampamos en la hoja justo arriba de la línea
+                const dataFirmaUrl = canvas.toDataURL('image/png');
+                const imgEstampada = document.createElement('img');
+                imgEstampada.src = dataFirmaUrl;
+                
+                const contenedorFirma = document.getElementById('espacioFirmaInyectada');
+                contenedorFirma.innerHTML = '';
+                contenedorFirma.appendChild(imgEstampada);
 
+                // Ocultamos la caja interactiva para que no altere la foto
+                document.getElementById("seccionFirmas").classList.add("oculto");
+
+                // Tomamos la captura del contrato con la firma ya inyectada
                 const elemento = document.getElementById('documentoContrato');
-                const canvasHTML = await html2canvas(elemento, { scale: 2 });
+                const canvasHTML = await html2canvas(elemento, { scale: 2, useCORS: true });
                 const imgData = canvasHTML.toDataURL('image/jpeg', 1.0);
 
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF('p', 'mm', 'a4');
                 const imgWidth = pdf.internal.pageSize.getWidth();
                 const pageHeight = pdf.internal.pageSize.getHeight();
-                // Calculamos el alto total que necesita el contrato
                 const imgHeight = (canvasHTML.height * imgWidth) / canvasHTML.width;
                 
                 let heightLeft = imgHeight;
                 let position = 0;
 
-                // Pegamos la primera página
                 pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
                 heightLeft -= pageHeight;
 
-                // 🚀 BUCLE MÁGICO: Si falta contrato, agrega hojas nuevas y lo acomoda
                 while (heightLeft > 0) {
                     position -= pageHeight;
                     pdf.addPage();
@@ -231,16 +242,14 @@
                 const pdfBlob = pdf.output('blob');
                 const fileName = "CONTRATO_" + nombreClienteFormateado.replace(/ /g, '_') + "_" + Date.now() + ".pdf";
                 
-                // Subir a Supabase
                 const uploadRes = await fetch(SUPABASE_URL + '/storage/v1/object/contratos_clientes/' + fileName, {
                     method: 'POST',
                     headers: { "apikey": SUPABASE_KEY, "Authorization": "Bearer " + SUPABASE_KEY, "Content-Type": "application/pdf" },
                     body: pdfBlob
                 });
 
-                if(!uploadRes.ok) throw new Error("Error al subir archivo");
+                if(!uploadRes.ok) throw new Error("Error en almacenamiento de bóveda.");
 
-                // Guardar la URL en el expediente del cliente
                 const fileUrl = SUPABASE_URL + '/storage/v1/object/public/contratos_clientes/' + fileName;
                 await fetch(SUPABASE_URL + '/rest/v1/clientes_ctr?id=eq.' + idClienteActual, {
                     method: 'PATCH',
@@ -248,15 +257,13 @@
                     body: JSON.stringify({ url_contrato: fileUrl })
                 });
 
-                document.getElementById("seccionFirmas").classList.add("oculto");
                 document.getElementById("mensajeExito").classList.remove("oculto");
 
             } catch (e) {
-                alert("❌ Ocurrió un error: " + e.message);
-                btn.innerText = "✅ ACEPTAR Y FIRMAR";
+                alert("❌ Fallo crítico en sellado: " + e.message);
+                btn.innerText = "✅ ACEPTAR Y ESTAMPAR FIRMA";
                 btn.disabled = false;
-                document.querySelector('.btn-limpiar').classList.remove('oculto');
-                btn.classList.remove('oculto');
+                document.getElementById("seccionFirmas").classList.remove("oculto");
             }
         }
     </script>
